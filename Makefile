@@ -20,7 +20,9 @@ ifeq ($(UNAME), Darwin)
     PDF_VIEWER=open -a "/Applications/Adobe Reader.app"
 endif
 
-all: bibtex xelatex
+all: pdf view
+
+pdf: bibtex xelatex
 
 xelatex: mkdir-tmp mkdir-out
 	@cd ${SRCDIR}; \
