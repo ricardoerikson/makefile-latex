@@ -81,6 +81,7 @@ init: mkdir
 gitignore:
 	@echo "$(subst $(whitespace),\n,${TMP_FILES})" > .gitignore
 	@echo ".DS_Store"		>> 	.gitignore
+	@echo "*.pdf"			>> 	.gitignore
 	@echo "${SRCDIR}/.*"	>> 	.gitignore
 	@echo "${TMPDIR}/*" 	>> 	.gitignore
 	@echo "${OUTPUTDIR}/*" 	>> 	.gitignore
