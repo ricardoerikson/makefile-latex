@@ -2,8 +2,8 @@ SRCDIR=src
 TMPDIR=tmp
 OUTPUTDIR=out
 
-TEXSRC=presentation.tex
-OUTPUTFILE=presentation-qualify.pdf
+TEXSRC=thesis.tex
+OUTPUTFILE=thesis.pdf
 BIBSRC=biblio.bib
 
 TMP_FILES=*.aux *.gz *.log *.bbl *.blg *.snm *.nav *.toc *.out *.xdv
