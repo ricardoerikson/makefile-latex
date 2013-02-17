@@ -6,7 +6,7 @@ TEXSRC=thesis.tex
 OUTPUTFILE=thesis.pdf
 BIBSRC=biblio.bib
 
-TMP_FILES=*.aux *.gz *.log *.bbl *.blg *.snm *.nav *.toc *.out *.xdv
+TMP_FILES=*.aux *.gz *.log *.bbl *.blg *.snm *.nav *.toc *.out *.xdv *.toc *.lof
 
 define whitespace
  
