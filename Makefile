@@ -6,7 +6,7 @@ TEXSRC=thesis.tex
 OUTPUTFILE=thesis.pdf
 BIBSRC=biblio.bib
 
-TMP_FILES=*.aux *.gz *.log *.bbl *.blg *.snm *.nav *.toc *.out *.xdv *.toc *.lof
+TMP_FILES=*.aux *.gz *.log *.bbl *.blg *.snm *.nav *.toc *.out *.xdv *.toc *.lof *.loa *.lot *.idx
 
 define whitespace
  
@@ -15,8 +15,8 @@ endef
 UNAME := $(shell uname -s)
 
 ifeq ($(UNAME), Darwin)
-    XELATEX=/usr/local/texlive/2012/bin/universal-darwin/xelatex
-    BIBTEX=/usr/local/texlive/2012/bin/universal-darwin/bibtex
+    XELATEX=/usr/local/texlive/2013/bin/universal-darwin/xelatex
+    BIBTEX=/usr/local/texlive/2013/bin/universal-darwin/bibtex
     PDF_VIEWER=open -a "/Applications/Adobe Reader.app"
 endif
 
@@ -24,14 +24,14 @@ all: pdf view
 
 pdf: bibtex xelatex
 
-xelatex: mkdir-tmp mkdir-out
-	@cd ${SRCDIR}; \
-	${XELATEX} -synctex=1 -interaction=nonstopmode --src-specials ${TEXSRC}
-	@make move
+xelatex: mkdir-tmp mkdir-out prepare
+	@${XELATEX} -synctex=1 -interaction=nonstopmode --src-specials ${TEXSRC}
+	@mv -f ${subst .tex,.pdf,${TEXSRC}} ${OUTPUTDIR}/${OUTPUTFILE}
+	@ls -1 ${TMP_FILES} 2>/dev/null | xargs -J {} mv -f {} ${TMPDIR}
+	@./rm-helper '${SRCDIR}|${OUTPUTDIR}|${TMPDIR}|Makefile|.gitignore|.git|rm-helper'
 
-xelatex-nopdf:
-	@cd ${SRCDIR}; \
-	${XELATEX} -synctex=1 -interaction=nonstopmode --no-pdf --src-specials ${TEXSRC}
+xelatex-nopdf: prepare
+	@${XELATEX} -synctex=1 -interaction=nonstopmode --no-pdf --src-specials ${TEXSRC}
 
 clean:
 ifneq (${TMPDIR},.)
@@ -39,22 +39,17 @@ ifneq (${TMPDIR},.)
 else
 	@rm ${TMP_FILES} *.pdf
 endif
+	@cd ${SRCDIR}; \
+	rm -f ${TMP_FILES} *.pdf
+	@./rm-helper '${SRCDIR}|${OUTPUTDIR}|${TMPDIR}|Makefile|.gitignore|.git|rm-helper'
 
 
 bibtex: xelatex-nopdf
-	@cd ${SRCDIR}; \
-	${BIBTEX} ${subst .tex,,${TEXSRC}}
+	@${BIBTEX} ${subst .tex,,${TEXSRC}}
 	@make xelatex-nopdf
 
-move:
-ifneq (${SRCDIR},.)
-	@cd ${SRCDIR}; \
-	mv -f ${TMP_FILES} ../${TMPDIR}; \
-	mv -f ${subst .tex,.pdf,${TEXSRC}} ../${OUTPUTDIR}/${OUTPUTFILE}
-else
-	@mv -f ${TMP_FILES} ${TMPDIR}
-	@mv -f ${subst .tex,.pdf,${TEXSRC}} ${OUTPUTDIR}/${OUTPUTFILE}
-endif
+prepare:
+	@test -d ${SRCDIR} && cp -R ${SRCDIR}/* .
 
 mkdir-src:
 ifneq (${SRCDIR},.)
@@ -81,7 +76,7 @@ init: mkdir
 gitignore:
 	@echo "$(subst $(whitespace),\n,${TMP_FILES})" > .gitignore
 	@echo ".DS_Store"		>> 	.gitignore
-	@echo "*.pdf"			>> 	.gitignore
+	@echo "${OUTPUTFILE}"			>> 	.gitignore
 	@echo "${SRCDIR}/.*"	>> 	.gitignore
 	@echo "${TMPDIR}/*" 	>> 	.gitignore
 	@echo "${OUTPUTDIR}/*" 	>> 	.gitignore
