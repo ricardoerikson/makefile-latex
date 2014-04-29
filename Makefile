@@ -80,6 +80,7 @@ mkdir: mkdir-src mkdir-tmp mkdir-out
 
 init: mkdir gitignore
 	@test -d .git || git init
+	@chmod 755 rm-helper
 
 gitignore:
 	@echo "$(subst $(whitespace),\n,${TMP_FILES})" > .gitignore
