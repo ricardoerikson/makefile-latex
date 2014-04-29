@@ -18,6 +18,10 @@ ifeq ($(UNAME), Darwin)
     XELATEX=/usr/local/texlive/2013/bin/universal-darwin/xelatex
     BIBTEX=/usr/local/texlive/2013/bin/universal-darwin/bibtex
     PDF_VIEWER=open -a "/Applications/Adobe Reader.app"
+else
+    XELATEX=xelatex
+    BIBTEX=bibtex
+    PDF_VIEWER=evince
 endif
 
 all: pdf view
@@ -27,7 +31,11 @@ pdf: bibtex xelatex
 xelatex: mkdir-tmp mkdir-out prepare
 	@${XELATEX} -synctex=1 -interaction=nonstopmode --src-specials ${TEXSRC}
 	@mv -f ${subst .tex,.pdf,${TEXSRC}} ${OUTPUTDIR}/${OUTPUTFILE}
+ifeq ($(UNAME), Darwin)
 	@ls -1 ${TMP_FILES} 2>/dev/null | xargs -J {} mv -f {} ${TMPDIR}
+else
+	@ls -1 ${TMP_FILES} 2>/dev/null | xargs -i mv -f {} ${TMPDIR}
+endif
 	@./rm-helper '${SRCDIR}|${OUTPUTDIR}|${TMPDIR}|Makefile|.gitignore|.git|rm-helper'
 
 xelatex-nopdf: prepare
