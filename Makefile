@@ -70,7 +70,7 @@ mkdir: mkdir-src mkdir-tmp mkdir-out
 	@touch ${SRCDIR}/${TEXSRC}
 	@touch ${SRCDIR}/${BIBSRC}
 
-init: mkdir
+init: mkdir gitignore
 	@test -d .git || git init
 
 gitignore:
