@@ -1,6 +1,7 @@
 SRCDIR=src
 TMPDIR=tmp
 OUTPUTDIR=out
+PROJECT_FILE=gcce.sublime-project
 
 TEXSRC=thesis.tex
 OUTPUTFILE=thesis.pdf
@@ -36,7 +37,7 @@ ifeq ($(UNAME), Darwin)
 else
 	@ls -1 ${TMP_FILES} 2>/dev/null | xargs -i mv -f {} ${TMPDIR}
 endif
-	@./rm-helper '${SRCDIR}|${OUTPUTDIR}|${TMPDIR}|Makefile|.gitignore|.git|rm-helper'
+	@make rm_helper
 
 xelatex-nopdf: prepare
 	@${XELATEX} -synctex=1 -interaction=nonstopmode --no-pdf --src-specials ${TEXSRC}
@@ -49,7 +50,7 @@ else
 endif
 	@cd ${SRCDIR}; \
 	rm -f ${TMP_FILES} *.pdf
-	@./rm-helper '${SRCDIR}|${OUTPUTDIR}|${TMPDIR}|Makefile|.gitignore|.git|rm-helper'
+	@make rm_helper
 
 
 bibtex: xelatex-nopdf
@@ -80,15 +81,17 @@ mkdir: mkdir-src mkdir-tmp mkdir-out
 
 init: mkdir gitignore
 	@test -d .git || git init
-	@chmod 755 rm-helper
 
 gitignore:
 	@echo "$(subst $(whitespace),\n,${TMP_FILES})" > .gitignore
 	@echo ".DS_Store"		>> 	.gitignore
-	@echo "${OUTPUTFILE}"			>> 	.gitignore
+	@echo "${OUTPUTFILE}"	>> 	.gitignore
 	@echo "${SRCDIR}/.*"	>> 	.gitignore
 	@echo "${TMPDIR}/*" 	>> 	.gitignore
 	@echo "${OUTPUTDIR}/*" 	>> 	.gitignore
 
 view:
 	@${PDF_VIEWER} ${OUTPUTDIR}/${OUTPUTFILE}
+
+rm_helper:
+	@./rm-helper '${SRCDIR}|${OUTPUTDIR}|${TMPDIR}|${PROJECT_FILE}|Makefile|.gitignore|.git|rm-helper'
