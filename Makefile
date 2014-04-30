@@ -18,7 +18,7 @@ UNAME := $(shell uname -s)
 ifeq ($(UNAME), Darwin)
     XELATEX=/usr/local/texlive/2013/bin/universal-darwin/xelatex
     BIBTEX=/usr/local/texlive/2013/bin/universal-darwin/bibtex
-    PDF_VIEWER=open -a "/Applications/Adobe Reader.app"
+    PDF_VIEWER=open
 else
     XELATEX=xelatex
     BIBTEX=bibtex
