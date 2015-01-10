@@ -5,6 +5,17 @@ Makefile to provide support for a Latex project.
 
 Before starting a project the writer must define the filenames and source, temp and output folders for the project.
 
+You should edit the following variables in the Makefile: 
+
+- TEXSRC=*your_main_source_file.tex*
+
+- OUTPUTFILE=*your_output_pdf_file.pdf*
+
+- BIBSRC=*your_bib_file.bib*
+
+- PROJECT_FILE=*your_project_file* # if you have one
+
+
 Targets:
 
 - init: Initialize an empty git repository into a latex project. This should be the first command to run on a latex project.
