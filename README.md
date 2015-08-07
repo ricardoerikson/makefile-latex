@@ -1,33 +1,40 @@
-makefile-latex
-==============
+# Makefile for LaTeX projects
 
-Makefile to provide support for a Latex project.
+This project contains some helper scripts that are used for building my LaTeX projects. The project contains a Makefile and a helper script (`rm-helper`) to remove temp folders and temp files. Some targets of the Makefile are based on some *git commands* and you (definetly) should integrate this project into your LaTeX project with `git`.
 
-Before starting a project the writer must define the filenames and source, temp and output folders for the project.
+## Supported Platforms
 
-You should edit the following variables in the Makefile: 
+* Mac OS X (Requires [MacTex](https://tug.org/mactex/) package)
+* Linux (Requires texlive packages)
 
-- TEXSRC=*your_main_source_file.tex*
+Use your package manager to install texlive packages
 
-- OUTPUTFILE=*your_output_pdf_file.pdf*
+* `sudo yum install texlive*` - Fedora <22, CentOS
+* `sudo dnf install texlive*` - Fedra 22+
 
-- BIBSRC=*your_bib_file.bib*
+## Configuration
 
-- PROJECT_FILE=*your_project_file* # if you have one
+Before starting a project, you must configure the files and folders that will be used in your project. This configuration is done by defining some variables in the `Makefile`. The following variables of the `Makefile` should be edited according to your project configuration: 
 
+```
+SRC_DIR=src
+TMP_DIR=tmp
+OUTPUT_DIR=out
+# If you have a project file
+PROJECT_FILE=project.sublime-project
+MAIN_TEX_SRC=thesis.tex
+OUTPUT_FILE=thesis.pdf
+BIB_SRC=biblio.bib 
+...
+TEXLIVE_YEAR = 2013;
+```
 
-Targets:
+## Targets
 
-- init: Initialize an empty git repository into a latex project. This should be the first command to run on a latex project.
-  
-- clean: Clean the temporary files of the project.
-  
-- bibtex: Generate bibtex related files. Run this command before use the xelatex target.
-
-- xelatex: Generates a .pdf file as an output of the .tex.
-
-- pdf: Automatically generates the bibtex and xelatex targets.
-
-- view: Open the .pdf file in a give viewer configured in the Makefile.
-
-- default: The default target runs pdf and view targets.
+* `init`: Initialize an empty git repository into a latex project. This should be the first command to run on a latex project.
+* `clean`: Remove the temporary files of the project.
+* `bibtex`: Generate bibtex related files. Run this command before use the xelatex target.
+* `xelatex`: Generates a `.pdf` file as an output of the `.tex`.
+* `pdf`: Automatically generates the bibtex and xelatex targets.
+* `view`: Open the `.pdf` file in a give viewer configured in the `Makefile`.
+* `default`: The default target runs pdf and view targets.
